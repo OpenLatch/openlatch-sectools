@@ -1,0 +1,47 @@
+# `kind: Tool` manifest (v2) — owned by the tool author.
+# The operator-side `openlatch-provider.yaml` at the repo root composes this
+# tool into the deployed sectools provider via `tool_paths:`.
+schema_version: 2
+kind: Tool
+
+editor:
+  slug: openlatch
+  display_name: OpenLatch
+  description: |
+    Security tools authored by OpenLatch Security Researchers and
+    auto-deployed to sectools.openlatch.ai.
+  homepage_url: https://openlatch.ai
+  docs_url: https://docs.openlatch.ai
+
+tools:
+  - slug: coinflip-tool
+    version: 0.1.0
+    license: apache-2.0
+    description: |
+      Synthetic detection tool that randomly returns allow/deny verdicts.
+      Used to validate the OpenLatch end-to-end pipeline (agent → client →
+      platform → provider → tool) without writing real detection logic.
+      This is the seed tool for openlatch-sectools and is slated for
+      removal once the first real tool ships.
+    hooks_supported:
+      - pre_tool_use
+    agents_supported:
+      - claude-code
+    capabilities:
+      - threat_category: pii_outbound
+        execution_mode: sync
+        declared_latency_p95_ms: 30
+        needs_raw_payload: false
+    # Author's default process — the operator can layer
+    # `process_override:` on top from the root provider manifest.
+    process:
+      command: ["uv", "run", "uvicorn", "coinflip_tool:app", "--port", "8081"]
+      cwd: "."
+      env: {}
+      health_check:
+        http:
+          port: 8081
+          path: /healthz
+      restart:
+        max_restarts: 5
+        window_seconds: 60

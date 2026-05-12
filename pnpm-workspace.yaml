@@ -1,0 +1,6 @@
+# pnpm workspace for Node/TypeScript tools under tools/<name>/.
+# The first Node tool will register itself here. Until then no Node
+# tools exist; the file is committed so contributors can see where
+# packages will be wired in.
+packages:
+  - "tools/*"

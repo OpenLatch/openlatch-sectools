@@ -1,0 +1,42 @@
+version: 2
+updates:
+  # Root npm dependencies (pins @openlatch/provider)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "area/runtime"]
+    groups:
+      provider-runtime:
+        patterns: ["@openlatch/*"]
+      npm-minor-patch:
+        update-types: ["minor", "patch"]
+
+  # Per-tool Python dependencies — add a new entry when a Python tool lands
+  - package-ecosystem: "pip"
+    directory: "/tools/coinflip-tool"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "area/coinflip-tool"]
+    groups:
+      python-minor-patch:
+        update-types: ["minor", "patch"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "ci"]
+    groups:
+      gha-all:
+        patterns: ["*"]
+
+  # Docker base image
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "area/runtime"]

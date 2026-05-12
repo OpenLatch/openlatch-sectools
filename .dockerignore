@@ -1,0 +1,52 @@
+# Don't ship build/CI artefacts or local-only files into the image.
+.git
+.github
+.claude
+.editorconfig
+.gitattributes
+.gitignore
+.gitleaks.toml
+.pre-commit-config.yaml
+.planning
+.brainstorming
+.local
+.brainstorms
+
+# Test artefacts
+coverage
+htmlcov
+.coverage
+.coverage.*
+**/__pycache__
+**/*.pyc
+
+# Editor / OS
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Lock-file backups
+*.bak
+
+# Node — `npm ci` repopulates this from package-lock.json
+node_modules
+
+# Python venvs — `uv sync` repopulates these
+.venv
+tools/*/.venv
+
+# Fly / deploy bookkeeping
+fly/*.bak
+scripts/*.pyc
+
+# Docs
+README.md
+SECURITY.md
+LICENSE
+docs
+
+# Misc
+*.log

@@ -1,0 +1,40 @@
+# gitleaks configuration for openlatch-sectools
+# https://github.com/gitleaks/gitleaks
+
+title = "openlatch-sectools gitleaks rules"
+
+# Extend the default rule set
+[extend]
+useDefault = true
+
+# OpenLatch-specific high-signal patterns
+[[rules]]
+id = "openlatch-editor-api-key"
+description = "OpenLatch editor API key (olk_edt_live_*)"
+regex = '''olk_edt_live_[A-Za-z0-9]{20,}'''
+tags = ["openlatch", "key"]
+
+[[rules]]
+id = "openlatch-webhook-secret"
+description = "OpenLatch webhook secret (whsec_live_*)"
+regex = '''whsec_live_[A-Za-z0-9]{20,}'''
+tags = ["openlatch", "secret"]
+
+[[rules]]
+id = "openlatch-binding-secret-env"
+description = "OPENLATCH_BINDING_SECRET_* assignment with a live-looking value"
+regex = '''OPENLATCH_BINDING_SECRET_[A-Z0-9_]+\s*=\s*['"]?whsec_live_[A-Za-z0-9]{20,}['"]?'''
+tags = ["openlatch", "env"]
+
+[allowlist]
+description = "Test fixtures and synthetic examples"
+paths = [
+    '''tests/.*''',
+    '''.*\.example\..*''',
+    '''README\.md''',
+]
+regexes = [
+    '''whsec_live_test''',
+    '''whsec_live_example''',
+    '''olk_edt_live_example''',
+]

@@ -1,0 +1,28 @@
+name: cleanup-fly-machines
+
+on:
+  schedule:
+    # 04:42 UTC every Monday
+    - cron: "42 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cleanup-fly-machines
+  cancel-in-progress: false
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [openlatch-sectools, openlatch-sectools-staging]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Destroy stale machines on ${{ matrix.app }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: bash scripts/verify-no-stale-machines.sh ${{ matrix.app }}

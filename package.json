@@ -1,0 +1,29 @@
+{
+  "name": "@openlatch/sectools-runtime",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Runtime image that bundles @openlatch/provider with every security tool authored by OpenLatch Security Researchers. Deployed to sectools.openlatch.ai.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OpenLatch/openlatch-sectools.git"
+  },
+  "homepage": "https://github.com/OpenLatch/openlatch-sectools#readme",
+  "bugs": {
+    "url": "https://github.com/OpenLatch/openlatch-sectools/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@openlatch/provider": "^0.1.0"
+  },
+  "scripts": {
+    "listen": "openlatch-provider listen --provider openlatch-provider.yaml --no-tls --port 8443",
+    "register": "openlatch-provider register --provider openlatch-provider.yaml",
+    "publish-tool": "openlatch-provider publish --tool",
+    "render-staging-manifest": "python scripts/render-staging-manifest.py",
+    "trigger:coinflip": "openlatch-provider trigger pre_tool_use --no-tls"
+  },
+  "packageManager": "pnpm@9.12.0"
+}

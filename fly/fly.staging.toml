@@ -1,0 +1,35 @@
+app = "openlatch-sectools-staging"
+primary_region = "iad"
+kill_signal = "SIGINT"
+kill_timeout = 30
+
+[build]
+  image = "registry.fly.io/openlatch-sectools:latest"
+
+[env]
+  ENVIRONMENT = "staging"
+  RUST_LOG = "info"
+
+[mounts]
+  source = "sectools_audit_staging"
+  destination = "/root/.openlatch/provider/logs"
+
+[http_service]
+  internal_port = 8443
+  force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = false
+  # Staging can scale to zero between deploys to save cost; production
+  # keeps one machine warm at all times.
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    grace_period = "60s"
+    interval = "15s"
+    method = "GET"
+    path = "/healthz"
+    timeout = "5s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

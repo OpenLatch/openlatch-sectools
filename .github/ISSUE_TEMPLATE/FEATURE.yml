@@ -1,0 +1,33 @@
+name: Feature request
+description: Suggest a new feature or improvement
+
+labels: ["enhancement"]
+type: Feature
+
+body:
+  - type: dropdown
+    attributes:
+      label: Area
+      description: Which part of the repo would this affect?
+      options:
+        - new tool
+        - existing tool
+        - provider runtime / deploy
+        - manifest / schema
+        - CI / workflows
+        - documentation
+        - other
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Feature description
+      placeholder: Tell us more about your feature request.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Motivation
+      placeholder: What problem does this solve? Who benefits?
+    validations:
+      required: false

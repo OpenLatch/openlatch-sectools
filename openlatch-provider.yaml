@@ -1,0 +1,37 @@
+# `kind: Provider` manifest (v2) — operator-owned.
+# Composes every `tools/*/openlatch-tool.yaml` into the deployed sectools
+# provider, declares the public `endpoint_url`, and wires per-tool
+# bindings with operator-layered process overrides.
+#
+# The deploy workflow uses `scripts/render-staging-manifest.py` to derive
+# a staging variant of this file (swaps provider.slug + endpoint_url +
+# binding.provider) without templating.
+schema_version: 2
+kind: Provider
+
+tool_paths:
+  - "./tools/*/openlatch-tool.yaml"
+
+providers:
+  - slug: openlatch-sectools
+    display_name: OpenLatch Security Tools
+    region: us-east-1
+    total_capacity_qps: 100
+    endpoint_url: https://sectools.openlatch.ai/v1/event
+
+bindings:
+  - tool: openlatch/coinflip-tool@0.1.0
+    provider: openlatch-sectools
+    local_endpoint: http://127.0.0.1:8081/event
+    declared_latency_p95_ms: 30
+    capacity_qps: 50
+    priority: 100
+    # Free tier so the marketplace doesn't show this seed tool as Paid.
+    pricing:
+      tier: free
+    # Operator-layered override on top of the tool's `process:` default.
+    # Use this for deploy-time tweaks like deny-rate or per-binding ports
+    # without touching the tool source.
+    process_override:
+      env:
+        OPENLATCH_COINFLIP_DENY_PCT: "30"

@@ -1,0 +1,36 @@
+app = "openlatch-sectools"
+primary_region = "iad"
+kill_signal = "SIGINT"
+kill_timeout = 30
+
+[build]
+  # Overridden at deploy time by `flyctl deploy --image <registry.fly.io/...:tag>`
+  image = "registry.fly.io/openlatch-sectools:latest"
+
+[env]
+  ENVIRONMENT = "production"
+  RUST_LOG = "info"
+
+# Audit JSONL survives machine restarts via this volume. The Dockerfile
+# mounts /root/.openlatch/provider/logs as the writer; see logging.md.
+[mounts]
+  source = "sectools_audit"
+  destination = "/root/.openlatch/provider/logs"
+
+[http_service]
+  internal_port = 8443
+  force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = false
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    grace_period = "30s"
+    interval = "15s"
+    method = "GET"
+    path = "/healthz"
+    timeout = "5s"
+
+[[vm]]
+  size = "shared-cpu-2x"
+  memory = "1gb"

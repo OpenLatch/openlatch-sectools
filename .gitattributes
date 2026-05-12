@@ -1,0 +1,10 @@
+* text=auto eol=lf
+*.png binary
+*.svg binary
+*.ico binary
+*.lock binary diff=lock
+
+# Lock files — generated; collapse in PR diffs
+uv.lock linguist-generated=true
+pnpm-lock.yaml linguist-generated=true
+package-lock.json linguist-generated=true

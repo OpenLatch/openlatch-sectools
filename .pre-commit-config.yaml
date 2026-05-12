@@ -1,0 +1,78 @@
+# See https://pre-commit.com for more information
+# Run `pre-commit install` after cloning to enable hooks
+# Run `pre-commit autoupdate` periodically to bump versions
+
+minimum_pre_commit_version: "3.2.0"
+default_stages: [pre-commit]
+fail_fast: false
+
+repos:
+  # ── General hygiene ──────────────────────────────────────────
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^\.planning/
+      - id: end-of-file-fixer
+        exclude: ^\.planning/
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+      - id: check-case-conflict
+      - id: check-symlinks
+
+  # ── Secret detection ─────────────────────────────────────────
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.0
+    hooks:
+      - id: gitleaks
+        exclude: ^\.planning/
+
+  # ── Spell checking (Rust-native, fast) ───────────────────────
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.32.0
+    hooks:
+      - id: typos
+        exclude: |
+          (?x)^(
+            uv\.lock|
+            pnpm-lock\.yaml|
+            package-lock\.json|
+            \.planning/.*|
+            coverage/.*|
+            .*\.svg|
+            .*\.png|
+            .*\.ico
+          )$
+
+  # ── Python: ruff (lint + format) ─────────────────────────────
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # ── Conventional commits ─────────────────────────────────────
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args:
+          - feat
+          - fix
+          - docs
+          - style
+          - refactor
+          - perf
+          - test
+          - build
+          - ci
+          - chore
+          - revert

@@ -1,0 +1,58 @@
+# Editor swap files
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Python
+*.pyc
+__pycache__/
+.venv/
+.uv/
+.python-version
+
+# Node
+node_modules/
+dist/
+build/
+.pnpm-store/
+
+# Docker
+*.pid
+*.sock
+
+# Secrets
+*.pem
+*.key
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+.coverage.*
+
+# Build outputs
+target/
+
+# AI agents — only per-machine / transient. Canonical files (CLAUDE.md,
+# AGENTS.md, .claude/rules/, .claude/settings.json) ARE tracked.
+CLAUDE.local.md
+.claude/worktrees/
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
+.planning/
+.brainstorming/
+/.brainstorms
+/.local
