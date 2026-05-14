@@ -55,9 +55,7 @@ async def detect(event: CloudEvent) -> Verdict:
             severity_hint="high",
             verdict_hint="deny",
             rule_id="coinflip.deny",
-            rationale_summary=(
-                f"coinflip rolled {roll} below deny threshold {threshold}"
-            ),
+            rationale_summary=(f"coinflip rolled {roll} below deny threshold {threshold}"),
             user_facing=UserFacing(
                 headline="Coinflip detector denied this action",
                 body=(

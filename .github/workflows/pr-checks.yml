@@ -1,4 +1,4 @@
-name: pr-checks
+name: PR Checks
 
 on:
   pull_request:
@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   changes:
-    name: detect-changed-tools
+    name: PR - Detect Changed Tools
     runs-on: ubuntu-latest
     outputs:
       python_tools: ${{ steps.filter.outputs.python_tools_files }}
@@ -50,7 +50,7 @@ jobs:
               - 'package-lock.json'
 
   python-lint-test:
-    name: python-lint-test
+    name: PR - Python Lint + Test
     needs: changes
     if: needs.changes.outputs.python_tools != ''
     runs-on: ubuntu-latest
@@ -97,7 +97,7 @@ jobs:
           fail_ci_if_error: false
 
   node-lint-test:
-    name: node-lint-test
+    name: PR - Node Lint + Test
     needs: changes
     if: needs.changes.outputs.node_tools != ''
     runs-on: ubuntu-latest
@@ -127,7 +127,7 @@ jobs:
           fail_ci_if_error: false
 
   manifest-validate:
-    name: manifest-validate
+    name: PR - Manifest Validate
     needs: changes
     if: needs.changes.outputs.manifests != ''
     runs-on: ubuntu-latest
@@ -151,7 +151,7 @@ jobs:
         run: npx -y openlatch-provider register --provider openlatch-provider.yaml --dry-run --skip-preflight
 
   docker-build:
-    name: docker-build
+    name: PR - Docker Build
     needs: changes
     if: needs.changes.outputs.docker != '' || needs.changes.outputs.python_tools != '' || needs.changes.outputs.node_tools != ''
     runs-on: ubuntu-latest
@@ -170,7 +170,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=sectools-pr
 
   all-checks:
-    name: all-checks
+    name: PR - All Checks
     needs: [python-lint-test, node-lint-test, manifest-validate, docker-build]
     if: always()
     runs-on: ubuntu-latest

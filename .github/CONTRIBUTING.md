@@ -1,6 +1,6 @@
 # Contributing to openlatch-sectools
 
-Thanks for your interest in contributing! `openlatch-sectools` is the monorepo where OpenLatch Security Researchers author tools that get auto-deployed to `sectools.openlatch.ai`. Whether you're adding a new tool, fixing a bug, sharpening the deploy pipeline, or improving docs — every contribution matters.
+Thanks for your interest in contributing! `openlatch-sectools` is where the security tools that ship built-in with the OpenLatch platform live in the open. Every tool here is written against the same public `openlatch-tool-sdk` you'd use to build your own — so a contribution here is also a worked example for the wider community. Whether you're adding a new tool, fixing a bug, sharpening the deploy pipeline, or improving docs — every contribution matters.
 
 Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before participating.
 

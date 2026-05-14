@@ -1,0 +1,7 @@
+# Files to copy into new worktrees created by Claude Code.
+# Uses .gitignore syntax; only matches files that are gitignored.
+.env
+.env.local
+.env.*.local
+*.pem
+*.key

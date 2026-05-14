@@ -2,7 +2,7 @@
   "name": "@openlatch/sectools-runtime",
   "version": "0.0.0",
   "private": true,
-  "description": "Runtime image that bundles @openlatch/provider with every security tool authored by OpenLatch Security Researchers. Deployed to sectools.openlatch.ai.",
+  "description": "Runtime image that bundles @openlatch/provider with the built-in security tools shipped with the OpenLatch platform. Open-sourced reference implementations built on the public openlatch-tool-sdk.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

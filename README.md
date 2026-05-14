@@ -1,12 +1,9 @@
 # openlatch-sectools
 
-> **Status — in bootstrap.** This repo depends on the v2 manifest split in [`openlatch-provider`](https://github.com/OpenLatch/openlatch-provider) (the `kind: Tool` + `kind: Provider` + `tool_paths:` design captured in `openlatch-provider/.local/handoff-multi-tool-manifest.md`). Until that ships, the deploy pipeline's `manifest-validate` step will reject the v2 manifests here.
-
-`openlatch-sectools` is the monorepo of security tools authored by OpenLatch Security Researchers and auto-deployed to `sectools.openlatch.ai` as a single connected OpenLatch provider. One Fly app supervises every tool; one push to `main` updates them all. Lift any `tools/<slug>/` directory into its own repo and it stays a valid OpenLatch tool — the SDK is the contract.
+`openlatch-sectools` is the open-source home of the security tools that ship built-in with the OpenLatch platform — every customer gets them out of the box. They're written against the public [`openlatch-tool-sdk`](https://pypi.org/project/openlatch-tool-sdk/) and bundled by [`@openlatch/provider`](https://www.npmjs.com/package/@openlatch/provider) — the same SDK and runtime any community contributor uses, with no special privileges. We open-sourced them so security researchers can study real detection logic, and so anyone who wants to author their own tool has a clone-and-modify starting point. Lift any `tools/<slug>/` directory into its own repo and it stays a valid OpenLatch tool — the SDK is the contract.
 
 - **License**: Apache-2.0
-- **Provider domain**: `sectools.openlatch.ai` (production), `sectools-staging.openlatch.ai` (staging)
-- **Runtime**: pinned [`@openlatch/provider`](https://www.npmjs.com/package/@openlatch/provider) on a Fly machine, listening on internal `8443` behind Fly TLS
+- **Distribution**: built-in to every OpenLatch deployment — available out-of-the-box to every customer with no installation step
 - **Tools**: each under `tools/<slug>/` with its own `openlatch-tool.yaml` (`kind: Tool`, v2)
 
 ---
@@ -20,7 +17,7 @@ sequenceDiagram
     participant A as Agent (e.g. Claude Code)
     participant C as openlatch-client<br/>(localhost:7443)
     participant P as openlatch-platform<br/>(api.openlatch.ai)
-    participant S as openlatch-sectools<br/>(sectools.openlatch.ai)
+    participant S as openlatch-sectools<br/>(built-in tools)
     participant T as Tool<br/>(127.0.0.1:8081)
     A->>C: pre_tool_use hook
     C->>P: forward (HMAC envelope)

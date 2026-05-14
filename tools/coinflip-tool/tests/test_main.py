@@ -12,9 +12,8 @@ from __future__ import annotations
 
 import json
 
-from fastapi.testclient import TestClient
-
 from coinflip_tool import app
+from fastapi.testclient import TestClient
 
 client = TestClient(app)
 

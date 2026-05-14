@@ -9,7 +9,7 @@ Security infrastructure for AI agents. A platform that plugs into agents via nat
 | **openlatch-client** | Rust (axum+tokio+clap) | Thin forwarder on the agent host: capture hook events, wrap, filter, forward, return verdict | npm / crates.io / Homebrew / curl |
 | **openlatch-platform** | Python (FastAPI) + React 19 SPA | Cloud control plane: ingest, normalize, route, marketplace catalog, policy engine, platform primitives | Fly.io |
 | **openlatch-provider** | Rust (axum+tokio+clap) | Two-mode binary: management CLI for Editor/Provider self-onboarding + runtime daemon for HMAC-signed inbound webhooks proxied to localhost-hosted detection tools | npm / crates.io / curl |
-| **openlatch-sectools** (this repo) | Python (uv) + Node (pnpm) + Docker + `@openlatch/provider` | Monorepo of security tools authored by OpenLatch Security Researchers; bundles every tool into one Fly app behind `openlatch-provider listen` | Fly.io (`sectools.openlatch.ai`) |
+| **openlatch-sectools** (this repo) | Python (uv) + Node (pnpm) + Docker + `@openlatch/provider` | Source of the built-in security tools shipped with the OpenLatch platform; written against the public SDK; bundled by `@openlatch/provider` into one Fly app per environment | Fly.io (`sectools.openlatch.ai`) |
 
 ## End-to-end pipeline
 

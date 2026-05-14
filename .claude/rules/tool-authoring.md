@@ -47,7 +47,7 @@ kind: Tool
 editor:
   slug: openlatch
   display_name: OpenLatch
-  description: Security tools authored by OpenLatch Security Researchers.
+  description: Built-in security tools that ship with the OpenLatch platform. Open-sourced, written against the public openlatch-tool-sdk — the same SDK any community author uses.
   homepage_url: https://openlatch.ai
   docs_url: https://docs.openlatch.ai
 tools:

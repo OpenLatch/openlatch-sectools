@@ -8,7 +8,7 @@ A faithful consumer of the public [`openlatch-tool-sdk`](https://pypi.org/projec
 Agent (pre_tool_use hook)
    └─► openlatch-client (localhost:7443)
          └─► openlatch-platform (cloud)
-               └─► openlatch-provider listen (this monorepo, sectools.openlatch.ai)
+               └─► openlatch-provider listen (the built-in provider that bundles this repo's tools)
                      └─► coinflip-tool (THIS — supervised on localhost:8081)
 ```
 

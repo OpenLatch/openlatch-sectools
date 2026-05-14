@@ -1,4 +1,4 @@
-name: cleanup-ghcr
+name: Cleanup GHCR
 
 on:
   schedule:

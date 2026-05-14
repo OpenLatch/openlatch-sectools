@@ -1,6 +1,6 @@
 # Security Policy
 
-OpenLatch is security infrastructure — we hold our own code to the same standard we enforce for AI agents. `openlatch-sectools` ships the detection tools that run *behind* OpenLatch on `sectools.openlatch.ai`, so its supply-chain and operational posture is as important as the platform itself.
+OpenLatch is security infrastructure — we hold our own code to the same standard we enforce for AI agents. `openlatch-sectools` is the source of the detection tools that ship built-in with the OpenLatch platform, so its supply-chain and operational posture matters as much as the platform itself.
 
 ## Supported Versions
 

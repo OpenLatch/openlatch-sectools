@@ -1,4 +1,4 @@
-name: cleanup-fly-machines
+name: Cleanup Fly Machines
 
 on:
   schedule:
