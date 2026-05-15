@@ -1,0 +1,69 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@openlatch/provider':
+        specifier: ^0.1.0
+        version: 0.1.0
+
+packages:
+
+  '@openlatch/provider-darwin-arm64@0.1.0':
+    resolution: {integrity: sha512-Y2xUED/dMbyN7G/c/ZnMTb/bd/CH00Os44kwKp5oKRTUy2eWEB3LA7IpX5zHk6YjTRV1isZdLl0QfgaVeCJOMg==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@openlatch/provider-darwin-x64@0.1.0':
+    resolution: {integrity: sha512-fFDaaszjUI7Nktlyeo2snSFd2025qgMpfpJWnhHZZ82J5dINyen05ib4EF1lLSMF2XZwMqjnzupqAIhjTalbvw==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@openlatch/provider-linux-arm64@0.1.0':
+    resolution: {integrity: sha512-w8Of4AXCrQt+B5e2gpXcxg3DzTGNWKjjwnCf9ygroq2osVJCx3a2U9K9+G1XQScLg4hy6jCQagj0qpphMKbxMQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@openlatch/provider-linux-x64@0.1.0':
+    resolution: {integrity: sha512-LwznxH8rDgVJsmYDKXbRSSiiE5eKLJhKNpNanMiPiC+QQDf8xpFcw2dIAlOImRz35dDba3T/fx/T0sFW0tXlqg==}
+    cpu: [x64]
+    os: [linux]
+
+  '@openlatch/provider-win32-x64@0.1.0':
+    resolution: {integrity: sha512-FfHiptOukmm1k2WpKhB4Xr1HGFDmxv1j1UPc68Wf1N3CVRchjO07JZNwRPyH6mDVBSUosfG8urKfh+xX2EJDOA==}
+    cpu: [x64]
+    os: [win32]
+
+  '@openlatch/provider@0.1.0':
+    resolution: {integrity: sha512-pEdH0SMwzX8aDG5+JuWSVjJ07l9pexbAZp1uLQhibmA2eG9UdsHGgtTKD80V1+Du+zXZIM3zuzH07LtWIDZ0fw==}
+    hasBin: true
+
+snapshots:
+
+  '@openlatch/provider-darwin-arm64@0.1.0':
+    optional: true
+
+  '@openlatch/provider-darwin-x64@0.1.0':
+    optional: true
+
+  '@openlatch/provider-linux-arm64@0.1.0':
+    optional: true
+
+  '@openlatch/provider-linux-x64@0.1.0':
+    optional: true
+
+  '@openlatch/provider-win32-x64@0.1.0':
+    optional: true
+
+  '@openlatch/provider@0.1.0':
+    optionalDependencies:
+      '@openlatch/provider-darwin-arm64': 0.1.0
+      '@openlatch/provider-darwin-x64': 0.1.0
+      '@openlatch/provider-linux-arm64': 0.1.0
+      '@openlatch/provider-linux-x64': 0.1.0
+      '@openlatch/provider-win32-x64': 0.1.0
