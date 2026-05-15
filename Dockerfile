@@ -22,14 +22,20 @@ ENV GIT_SHA=${GIT_SHA} \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     NODE_ENV=production \
     UV_LINK_MODE=copy \
-    UV_NO_PROGRESS=1
+    UV_NO_PROGRESS=1 \
+    UV_PYTHON=3.12
+# Debian bookworm ships Python 3.11, not 3.12, so we do not apt-install
+# Python at all. uv (installed here in the `base` stage, shared by both
+# `deps` and `runtime`) manages a standalone CPython 3.12; every tool runs
+# via `uv run`, and the runtime CMD is the Node `openlatch-provider`, so no
+# system Python on PATH is required.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        python3.12 python3.12-venv ca-certificates curl tini \
+        ca-certificates curl tini \
     && rm -rf /var/lib/apt/lists/* \
     && curl -LsSf https://astral.sh/uv/install.sh | sh \
     && mv /root/.local/bin/uv /usr/local/bin/uv \
-    && ln -sf /usr/bin/python3.12 /usr/local/bin/python \
+    && uv python install 3.12 \
     && corepack enable
 WORKDIR /app
 
