@@ -4,10 +4,10 @@
 
 | Entity | Convention | Example |
 | ------ | ---------- | ------- |
-| Tool slug (filesystem + manifest) | kebab-case, ≤ 30 chars, lowercase ASCII + `-` | `coinflip-tool`, `prompt-injection-tool` |
-| Tool Python package | underscored slug | `coinflip_tool` |
+| Tool slug (filesystem + manifest) | kebab-case, ≤ 30 chars, lowercase ASCII + `-` | `shell-guard`, `prompt-injection-guard` |
+| Tool Python package | underscored slug | `shell_guard` |
 | Provider slug | kebab-case, environment-suffixed | `openlatch-sectools`, `openlatch-sectools-staging` |
-| Binding slug (used in env var name) | UPPER_SNAKE_CASE of the binding's logical name | `COINFLIP_TOOL` |
+| Binding slug (used in env var name) | UPPER_SNAKE_CASE of the binding's logical name | `SHELL_GUARD` |
 | Editor slug | kebab-case, no suffix | `openlatch` |
 
 ## Files & Directories

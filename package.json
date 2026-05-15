@@ -23,7 +23,7 @@
     "register": "openlatch-provider register --provider openlatch-provider.yaml",
     "publish-tool": "openlatch-provider publish --tool",
     "render-staging-manifest": "python scripts/render-staging-manifest.py",
-    "trigger:coinflip": "openlatch-provider trigger pre_tool_use --no-tls"
+    "trigger": "openlatch-provider trigger pre_tool_use --no-tls"
   },
   "packageManager": "pnpm@9.12.0"
 }

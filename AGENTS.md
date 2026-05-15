@@ -6,7 +6,7 @@ Project orientation for AI coding agents (Codex, Aider, Cursor, Cline, Claude Co
 
 ## What this repo is
 
-`openlatch-sectools` is the open-source home of the **built-in security tools** that ship with the OpenLatch platform. Every customer gets them out of the box. The tools are written against the public [`openlatch-tool-sdk`](https://pypi.org/project/openlatch-tool-sdk/) (Python) / [`@openlatch/tool-sdk`](https://www.npmjs.com/package/@openlatch/tool-sdk) (Node) and bundled by the pinned [`@openlatch/provider`](https://www.npmjs.com/package/@openlatch/provider) runtime into a single container image deployed on Fly.io as `sectools.openlatch.ai` (prod) and `sectools-staging.openlatch.ai` (staging).
+`openlatch-sectools` is the open-source home of the **built-in security tools** that ship with the OpenLatch platform. Every customer gets them out of the box. The tools are written against the `openlatch-tool-sdk` (vendored at `vendor/openlatch-tool-sdk/` — PyPI predates the post-PR1 contract) and bundled by the pinned [`@openlatch/provider`](https://www.npmjs.com/package/@openlatch/provider) runtime into a single container image deployed on Fly.io as `sectools.openlatch.ai` (prod) and `sectools-staging.openlatch.ai` (staging).
 
 Any `tools/<slug>/` directory is a self-contained, lift-and-shift OpenLatch tool — the SDK is the contract.
 
@@ -34,11 +34,19 @@ openlatch-sectools/
 ├── Dockerfile                   # multi-stage: base → deps → runtime
 ├── fly/fly.{staging,production}.toml
 ├── tools/
-│   └── coinflip-tool/           # seed tool — slated for removal once a real tool ships
-│       ├── openlatch-tool.yaml  # kind: Tool (v2)
-│       ├── pyproject.toml       # uv-managed
-│       ├── src/coinflip_tool/   # FastAPI app, @tool decorator
-│       └── tests/
+│   ├── pii-scanner/             # pii_outbound, pii_inbound — port 8081
+│   ├── secrets-detector/        # credential_detection — port 8082
+│   ├── shell-guard/             # shell_dangerous, shell_exfiltration — port 8083
+│   │   ├── openlatch-tool.yaml  # kind: Tool (v2)
+│   │   ├── pyproject.toml       # uv-managed (SDK via vendor path source)
+│   │   ├── src/shell_guard/     # FastAPI app, @tool decorator
+│   │   └── tests/
+│   ├── prompt-injection-guard/  # injection_user_input, injection_tool_response — port 8084
+│   ├── tool-integrity/          # tool_poison_detection, tool_typosquatting, tool_hash_verification — port 8085
+│   ├── attack-path-guard/       # attack_path_analysis — port 8086 (async, 5000 ms)
+│   └── config-guard/            # configuration_threat — port 8087
+├── vendor/
+│   └── openlatch-tool-sdk/      # vendored SDK (de-vendor tracked in vendor/README.md)
 ├── scripts/                     # register-and-sync-secrets / verify-no-stale-machines / render-staging-manifest
 ├── .github/workflows/           # pr-checks / deploy / release-please / cleanup-{ghcr,fly-machines}
 └── .claude/rules/               # ← topic-specific guardrails; read these
@@ -65,15 +73,15 @@ When a rule and this file disagree, the rule wins.
 ## Common commands
 
 ```bash
-# Install pinned runtime + seed tool deps
+# Install pinned runtime + shell-guard deps (use any tool slug you're working on)
 npm ci --omit=dev
-cd tools/coinflip-tool && uv sync && cd ../..
+cd tools/shell-guard && uv sync && cd ../..
 
 # Run the full provider + supervisor locally (no TLS, port 8443)
 npx openlatch-provider listen --provider openlatch-provider.yaml --no-tls --port 8443
 
 # Fire a synthetic event (grab bnd_… from listen logs)
-npx openlatch-provider trigger pre_tool_use --binding bnd_REPLACE_ME --tool Bash --input 'ls' --no-tls
+npx openlatch-provider trigger pre_tool_use --binding bnd_REPLACE_ME --tool Bash --input 'rm -rf /' --no-tls
 
 # Validate without deploying
 npx openlatch-provider register --provider openlatch-provider.yaml --dry-run --skip-preflight
@@ -106,9 +114,9 @@ pre-commit run --all-files
 ## Branching, commits, releases
 
 - Branches: `feat/<short-name>`, `fix/<short-name>`, `docs/<short-name>`, `chore/<short-name>`.
-- Commits: **Conventional Commits** enforced by `commit-msg` hook. Tool-scoped commits use the tool slug as scope (`feat(coinflip-tool): …`).
+- Commits: **Conventional Commits** enforced by `commit-msg` hook. Tool-scoped commits use the tool slug as scope (`feat(shell-guard): …`).
 - PRs squash-merge into `main`; `main` deploys via `deploy.yml` (staging → smoke → production).
-- Releases: `release-please` opens **one Release PR per tool** (component-prefixed tags like `coinflip-tool-v0.2.0`).
+- Releases: `release-please` opens **one Release PR per tool** (component-prefixed tags like `shell-guard-v0.1.0`).
 
 ## Tech stack (must-know)
 

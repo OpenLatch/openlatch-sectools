@@ -1,0 +1,47 @@
+# `kind: Tool` manifest (v2) — owned by the tool author.
+# The operator-side `openlatch-provider.yaml` at the repo root composes this
+# tool into the deployed sectools provider via `tool_paths:`.
+schema_version: 2
+kind: Tool
+
+editor:
+  slug: openlatch
+  display_name: OpenLatch
+  description: |
+    Built-in security tools that ship with the OpenLatch platform.
+    Open-sourced, written against the public `openlatch-tool-sdk` —
+    the same SDK any community author uses.
+  homepage_url: https://openlatch.ai
+  docs_url: https://docs.openlatch.ai
+
+tools:
+  - slug: secrets-detector
+    version: 0.1.0
+    license: apache-2.0
+    description: |
+      Detects credentials and secrets in agent tool calls using regex-based
+      pattern matching. Flags AWS keys, GitHub PATs, Anthropic API keys,
+      Slack tokens, JWTs, Bearer tokens, and PEM private keys before they
+      can be logged, exfiltrated, or accidentally disclosed.
+    hooks_supported:
+      - pre_tool_use
+    agents_supported:
+      - claude-code
+    capabilities:
+      - threat_category: credential_detection
+        execution_mode: sync
+        declared_latency_p95_ms: 30
+        needs_raw_payload: false
+    # Author's default process — the operator can layer
+    # `process_override:` on top from the root provider manifest.
+    process:
+      command: ["uv", "run", "uvicorn", "secrets_detector:app", "--port", "8082"]
+      cwd: "."
+      env: {}
+      health_check:
+        http:
+          port: 8082
+          path: /healthz
+      restart:
+        max_restarts: 5
+        window_seconds: 60

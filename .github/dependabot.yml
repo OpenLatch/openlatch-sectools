@@ -16,10 +16,64 @@ updates:
 
   # Per-tool Python dependencies — add a new entry when a Python tool lands
   - package-ecosystem: "pip"
-    directory: "/tools/coinflip-tool"
+    directory: "/tools/pii-scanner"
     schedule:
       interval: "weekly"
-    labels: ["dependencies", "area/coinflip-tool"]
+    labels: ["dependencies", "area/pii-scanner"]
+    groups:
+      python-minor-patch:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "pip"
+    directory: "/tools/secrets-detector"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "area/secrets-detector"]
+    groups:
+      python-minor-patch:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "pip"
+    directory: "/tools/shell-guard"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "area/shell-guard"]
+    groups:
+      python-minor-patch:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "pip"
+    directory: "/tools/prompt-injection-guard"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "area/prompt-injection-guard"]
+    groups:
+      python-minor-patch:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "pip"
+    directory: "/tools/tool-integrity"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "area/tool-integrity"]
+    groups:
+      python-minor-patch:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "pip"
+    directory: "/tools/attack-path-guard"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "area/attack-path-guard"]
+    groups:
+      python-minor-patch:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "pip"
+    directory: "/tools/config-guard"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "area/config-guard"]
     groups:
       python-minor-patch:
         update-types: ["minor", "patch"]

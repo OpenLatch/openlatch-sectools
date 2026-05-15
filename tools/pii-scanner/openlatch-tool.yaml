@@ -1,0 +1,48 @@
+# `kind: Tool` manifest (v2) — owned by the tool author.
+# The operator-side `openlatch-provider.yaml` at the repo root composes this
+# tool into the deployed sectools provider via `tool_paths:`.
+schema_version: 2
+kind: Tool
+
+editor:
+  slug: openlatch
+  display_name: OpenLatch
+  description: |
+    Built-in security tools that ship with the OpenLatch platform.
+    Open-sourced, written against the public `openlatch-tool-sdk` —
+    the same SDK any community author uses.
+  homepage_url: https://openlatch.ai
+  docs_url: https://docs.openlatch.ai
+
+tools:
+  - slug: pii-scanner
+    version: 0.1.0
+    license: apache-2.0
+    description: |
+      Detects personally identifiable information (email, SSN, credit card,
+      phone, IP) in outbound agent actions and inbound tool responses using
+      regex recognizers, with optional Microsoft Presidio enrichment.
+    hooks_supported:
+      - pre_tool_use
+    agents_supported:
+      - claude-code
+    capabilities:
+      - threat_category: pii_outbound
+        execution_mode: sync
+        declared_latency_p95_ms: 60
+        needs_raw_payload: false
+      - threat_category: pii_inbound
+        execution_mode: sync
+        declared_latency_p95_ms: 60
+        needs_raw_payload: false
+    process:
+      command: ["uv", "run", "uvicorn", "pii_scanner:app", "--port", "8081"]
+      cwd: "."
+      env: {}
+      health_check:
+        http:
+          port: 8081
+          path: /healthz
+      restart:
+        max_restarts: 5
+        window_seconds: 60

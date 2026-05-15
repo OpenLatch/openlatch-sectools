@@ -15,4 +15,6 @@ openlatch-provider.yaml @ldelsalle @OpenLatch/openlatch-sectools-maintainers
 # Per-tool ownership defaults to the maintainers team; individual tool
 # directories may override below as authors join.
 /tools/ @OpenLatch/openlatch-sectools-maintainers
-/tools/coinflip-tool/ @ldelsalle
+
+# Vendored SDK contract — re-synced from openlatch-provider, operator-owned.
+/vendor/ @ldelsalle @OpenLatch/openlatch-sectools-maintainers

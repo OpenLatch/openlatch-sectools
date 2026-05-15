@@ -19,19 +19,83 @@ providers:
     total_capacity_qps: 100
     endpoint_url: https://sectools.openlatch.ai/v1/event
 
+# Seven first-party tools (editor `openlatch`), one binding each, one
+# 127.0.0.1 port each (8081-8087). `declared_latency_p95_ms` mirrors each
+# tool's capability budget; attack-path-guard is the async outlier.
 bindings:
-  - tool: openlatch/coinflip-tool@0.1.0
+  - tool: openlatch/pii-scanner@0.1.0
     provider: openlatch-sectools
     local_endpoint: http://127.0.0.1:8081/event
+    declared_latency_p95_ms: 60
+    capacity_qps: 50
+    priority: 100
+    pricing:
+      tier: free
+    process_override:
+      env: {}
+
+  - tool: openlatch/secrets-detector@0.1.0
+    provider: openlatch-sectools
+    local_endpoint: http://127.0.0.1:8082/event
     declared_latency_p95_ms: 30
     capacity_qps: 50
     priority: 100
-    # Free tier so the marketplace doesn't show this seed tool as Paid.
     pricing:
       tier: free
-    # Operator-layered override on top of the tool's `process:` default.
-    # Use this for deploy-time tweaks like deny-rate or per-binding ports
-    # without touching the tool source.
     process_override:
-      env:
-        OPENLATCH_COINFLIP_DENY_PCT: "30"
+      env: {}
+
+  - tool: openlatch/shell-guard@0.1.0
+    provider: openlatch-sectools
+    local_endpoint: http://127.0.0.1:8083/event
+    declared_latency_p95_ms: 40
+    capacity_qps: 50
+    priority: 100
+    pricing:
+      tier: free
+    process_override:
+      env: {}
+
+  - tool: openlatch/prompt-injection-guard@0.1.0
+    provider: openlatch-sectools
+    local_endpoint: http://127.0.0.1:8084/event
+    declared_latency_p95_ms: 120
+    capacity_qps: 50
+    priority: 100
+    pricing:
+      tier: free
+    process_override:
+      env: {}
+
+  - tool: openlatch/tool-integrity@0.1.0
+    provider: openlatch-sectools
+    local_endpoint: http://127.0.0.1:8085/event
+    declared_latency_p95_ms: 50
+    capacity_qps: 50
+    priority: 100
+    pricing:
+      tier: free
+    process_override:
+      env: {}
+
+  - tool: openlatch/attack-path-guard@0.1.0
+    provider: openlatch-sectools
+    local_endpoint: http://127.0.0.1:8086/event
+    declared_latency_p95_ms: 5000
+    capacity_qps: 20
+    priority: 90
+    pricing:
+      tier: free
+    process_override:
+      env: {}
+
+  - tool: openlatch/config-guard@0.1.0
+    provider: openlatch-sectools
+    local_endpoint: http://127.0.0.1:8087/event
+    declared_latency_p95_ms: 80
+    capacity_qps: 50
+    priority: 100
+    pricing:
+      tier: free
+    process_override:
+      env: {}

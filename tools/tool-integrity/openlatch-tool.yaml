@@ -1,0 +1,58 @@
+# `kind: Tool` manifest (v2) — owned by the tool author.
+# The operator-side `openlatch-provider.yaml` at the repo root composes this
+# tool into the deployed sectools provider via `tool_paths:`.
+schema_version: 2
+kind: Tool
+
+editor:
+  slug: openlatch
+  display_name: OpenLatch
+  description: |
+    Built-in security tools that ship with the OpenLatch platform.
+    Open-sourced, written against the public `openlatch-tool-sdk` —
+    the same SDK any community author uses.
+  homepage_url: https://openlatch.ai
+  docs_url: https://docs.openlatch.ai
+
+tools:
+  - slug: tool-integrity
+    version: 0.1.0
+    license: apache-2.0
+    description: |
+      Detects poisoned, typosquatted, or tampered tool/MCP definitions before
+      an agent binds them. Inspects names and descriptions for invisible
+      characters, Bidi overrides, homoglyph attacks, and imperative-injection
+      strings; checks names against a registry of known-good CLI tools to
+      catch typosquatting; and optionally validates a SHA-256 content hash
+      against a platform-supplied prior-config baseline to detect drift.
+    hooks_supported:
+      - pre_tool_use
+    agents_supported:
+      - claude-code
+    capabilities:
+      - threat_category: tool_poison_detection
+        execution_mode: sync
+        declared_latency_p95_ms: 50
+        needs_raw_payload: false
+      - threat_category: tool_typosquatting
+        execution_mode: sync
+        declared_latency_p95_ms: 50
+        needs_raw_payload: false
+      - threat_category: tool_hash_verification
+        execution_mode: sync
+        declared_latency_p95_ms: 50
+        needs_raw_payload: false
+        needs_prior_config_state: true
+    # Author's default process — the operator can layer
+    # `process_override:` on top from the root provider manifest.
+    process:
+      command: ["uv", "run", "uvicorn", "tool_integrity:app", "--port", "8085"]
+      cwd: "."
+      env: {}
+      health_check:
+        http:
+          port: 8085
+          path: /healthz
+      restart:
+        max_restarts: 5
+        window_seconds: 60

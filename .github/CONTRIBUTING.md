@@ -28,7 +28,7 @@ git clone https://github.com/YOUR_USERNAME/openlatch-sectools.git
 cd openlatch-sectools
 pre-commit install
 npm install                        # installs the pinned @openlatch/provider
-cd tools/coinflip-tool && uv sync  # or any other tool you're touching
+cd tools/shell-guard && uv sync    # or any other tool you're touching
 ```
 
 ---
@@ -52,7 +52,7 @@ cd tools/coinflip-tool && uv sync  # or any other tool you're touching
    ```
 
 3. Write your detection logic. Keep `/healthz` returning 200; the runtime supervisor relies on it.
-4. Author an `openlatch-tool.yaml` (`kind: Tool`, `schema_version: 2`) — see `tools/coinflip-tool/openlatch-tool.yaml` for the canonical example.
+4. Author an `openlatch-tool.yaml` (`kind: Tool`, `schema_version: 2`) — see `tools/shell-guard/openlatch-tool.yaml` for the canonical example.
 5. Add a binding for your tool to the root `openlatch-provider.yaml` (`kind: Provider`).
 6. Run locally:
 
@@ -87,7 +87,7 @@ Per-tool flags isolate coverage so one untested tool doesn't drag the whole repo
 We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```text
-feat(coinflip-tool): expose deny-pct override via env
+feat(shell-guard): add SHELL-CURL-EXFIL-01 rule for curl data exfiltration
 fix(deploy): wait for /healthz before declaring staging green
 docs(readme): add Mermaid diagram for round-trip
 chore(deps): bump @openlatch/provider to 0.2.0

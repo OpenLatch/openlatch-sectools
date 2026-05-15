@@ -21,11 +21,11 @@ tools/<slug>/
 
 Every tool MUST:
 
-1. **Speak the OpenLatch SDK protocol**: receive a `CloudEvent`, return a `Verdict` (≤250 KB). Use `openlatch-tool-sdk` (PyPI) or `@openlatch/tool-sdk` (npm).
+1. **Speak the OpenLatch SDK protocol**: receive a `CloudEvent`, return a `Verdict` (≤250 KB). Use `openlatch-tool-sdk` (vendored at `vendor/openlatch-tool-sdk/`; reference it via `[tool.uv.sources] openlatch-tool-sdk = { path = "../../vendor/openlatch-tool-sdk" }` in each tool's `pyproject.toml`).
 2. **Expose `/healthz`** that returns 200 with any payload. The supervisor polls this at startup and during steady-state.
 3. **Listen on `127.0.0.1:<port>`** — never bind a public interface. The Fly machine is the only network boundary.
 4. **Print structured logs to stdout/stderr**. No log files. Fly drains stdout.
-5. **Be deterministic-or-clearly-stochastic**. Random verdicts (like `coinflip-tool`) are fine as long as they're called out in the tool's README.
+5. **Be deterministic by default.** Tools should produce the same verdict for the same input. If a tool has any intentional non-determinism (sampling, probabilistic filtering), document it explicitly in the tool's README.
 
 ## Latency budget
 
@@ -51,27 +51,32 @@ editor:
   homepage_url: https://openlatch.ai
   docs_url: https://docs.openlatch.ai
 tools:
-  - slug: <kebab-slug>
+  - slug: shell-guard          # replace with your tool's kebab-slug
     version: 0.1.0
     license: apache-2.0
     description: One sentence.
     hooks_supported: [pre_tool_use]
     agents_supported: [claude-code]
     capabilities:
-      - threat_category: pii_outbound
+      - threat_category: shell_dangerous
         execution_mode: sync
         declared_latency_p95_ms: 30
         needs_raw_payload: false
+        # needs_prior_config_state: true  # set for stateful detectors (tool-integrity, config-guard)
     process:
-      command: ["uv", "run", "uvicorn", "<slug_underscored>:app", "--port", "<port>"]
+      command: ["uv", "run", "uvicorn", "shell_guard:app", "--port", "8083"]
       cwd: "."
       env: {}
       health_check:
-        http: { port: <port>, path: /healthz }
+        http: { port: 8083, path: /healthz }
       restart:
         max_restarts: 5
         window_seconds: 60
 ```
+
+**Stateful detectors**: `tool-integrity` (`tool_hash_verification`) and `config-guard` declare `needs_prior_config_state: true`; `config-guard` also declares `needs_raw_payload: true`. These tools read `event.prior_config_state` (the platform feeds prior config-artifact state at call time; the tool itself stays stateless — no database).
+
+**ML/model extras**: any optional model dependency (e.g. the deberta/llm-guard model in `prompt-injection-guard`) MUST be a lazy, optional extra (`[project.optional-dependencies] ml = [...]`). Never bake model weights into the container image; load them on first use, guarded by an env flag.
 
 Add a matching binding to the root `openlatch-provider.yaml`:
 
@@ -91,8 +96,8 @@ bindings:
 ## Local development loop
 
 ```bash
-# 1. Sync the tool's deps
-cd tools/<slug>
+# 1. Sync the tool's deps (shell-guard is the canonical copy-me template)
+cd tools/shell-guard
 uv sync
 
 # 2. Run the full provider + supervisor locally
@@ -101,9 +106,11 @@ npx openlatch-provider listen \
   --provider openlatch-provider.yaml \
   --no-tls --port 8443
 
-# 3. Fire a synthetic event
+# 3. Fire a synthetic event (input 'rm -rf /' → block SHELL-RM-ROOT-01; 'ls' → allow)
 npx openlatch-provider trigger pre_tool_use \
   --binding <bnd_id_from_listen_logs> \
+  --tool Bash \
+  --input 'rm -rf /' \
   --no-tls
 ```
 

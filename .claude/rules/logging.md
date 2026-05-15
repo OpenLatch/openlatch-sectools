@@ -19,7 +19,7 @@ A Python tool should print one JSON object per event:
 ```python
 print(json.dumps({
     "event_id": event.event_id,
-    "rule_id": "coinflip.deny",
+    "rule_id": "SHELL-RM-ROOT-01",
     "verdict_hint": verdict.verdict_hint,
     "risk_score": verdict.risk_score,
     "latency_ms": latency_ms,

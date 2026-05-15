@@ -169,16 +169,17 @@ jobs:
           OPENLATCH_API_URL: https://api.openlatch.ai
         run: |
           set -euo pipefail
-          # Find the coinflip binding ID on staging
-          bnd=$(npx -y openlatch-provider bindings list --output json | jq -r '.[] | select(.tool_slug=="coinflip-tool" and (.provider_slug|test("staging"))) | .id' | head -n1)
+          # Find the shell-guard binding ID on staging and fire a known
+          # dangerous command — exercises a real deny round-trip.
+          bnd=$(npx -y openlatch-provider bindings list --output json | jq -r '.[] | select(.tool_slug=="shell-guard" and (.provider_slug|test("staging"))) | .id' | head -n1)
           if [ -z "$bnd" ]; then
-            echo "::error::no staging coinflip binding found"
+            echo "::error::no staging shell-guard binding found"
             exit 1
           fi
           npx -y openlatch-provider trigger pre_tool_use \
             --binding "$bnd" \
             --tool Bash \
-            --input 'ls'
+            --input 'rm -rf /'
 
   deploy-production:
     name: Deploy - Production

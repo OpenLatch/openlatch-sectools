@@ -4,9 +4,11 @@ Project orientation for Claude Code and other agents working in `openlatch-secto
 
 ## What this repo is
 
-`openlatch-sectools` is the open-source home of the **built-in security tools** that ship with the OpenLatch platform. Every customer gets them out of the box. The tools are written against the public [`openlatch-tool-sdk`](https://pypi.org/project/openlatch-tool-sdk/) (Python) / [`@openlatch/tool-sdk`](https://www.npmjs.com/package/@openlatch/tool-sdk) (Node) and bundled by the pinned [`@openlatch/provider`](https://www.npmjs.com/package/@openlatch/provider) runtime into a single container image deployed on Fly.io as `sectools.openlatch.ai` (prod) and `sectools-staging.openlatch.ai` (staging).
+`openlatch-sectools` is the open-source home of the **built-in security tools** that ship with the OpenLatch platform. Every customer gets them out of the box. The tools are written against the `openlatch-tool-sdk` (vendored at `vendor/openlatch-tool-sdk/` — see below) and bundled by the pinned [`@openlatch/provider`](https://www.npmjs.com/package/@openlatch/provider) runtime into a single container image deployed on Fly.io as `sectools.openlatch.ai` (prod) and `sectools-staging.openlatch.ai` (staging).
 
 We open-sourced them so security researchers can study real detection logic, and so anyone authoring a tool has a clone-and-modify starting point. **Any `tools/<slug>/` directory is a self-contained, lift-and-shift OpenLatch tool** — the SDK is the contract.
+
+> **Vendored SDK**: `openlatch-tool-sdk` is vendored at `vendor/openlatch-tool-sdk/` because the PyPI release predates the post-PR1 contract (`Verdict.actions[]`, `prior_config_state`, `score_to_severity`). Each tool's `pyproject.toml` references it via `[tool.uv.sources] openlatch-tool-sdk = { path = "../../vendor/openlatch-tool-sdk" }`. A de-vendor follow-up is tracked in `vendor/README.md`.
 
 ### Where this repo sits in the OpenLatch system
 
@@ -32,11 +34,19 @@ openlatch-sectools/
 ├── Dockerfile                   # multi-stage: base → deps → runtime
 ├── fly/fly.{staging,production}.toml
 ├── tools/
-│   └── coinflip-tool/           # seed tool — slated for removal once a real tool ships
-│       ├── openlatch-tool.yaml  # kind: Tool (v2)
-│       ├── pyproject.toml       # uv-managed
-│       ├── src/coinflip_tool/   # FastAPI app, @tool decorator
-│       └── tests/
+│   ├── pii-scanner/             # pii_outbound, pii_inbound — port 8081
+│   ├── secrets-detector/        # credential_detection — port 8082
+│   ├── shell-guard/             # shell_dangerous, shell_exfiltration — port 8083
+│   │   ├── openlatch-tool.yaml  # kind: Tool (v2)
+│   │   ├── pyproject.toml       # uv-managed (SDK via vendor path source)
+│   │   ├── src/shell_guard/     # FastAPI app, @tool decorator
+│   │   └── tests/
+│   ├── prompt-injection-guard/  # injection_user_input, injection_tool_response — port 8084
+│   ├── tool-integrity/          # tool_poison_detection, tool_typosquatting, tool_hash_verification — port 8085
+│   ├── attack-path-guard/       # attack_path_analysis — port 8086 (async, 5000 ms)
+│   └── config-guard/            # configuration_threat — port 8087
+├── vendor/
+│   └── openlatch-tool-sdk/      # vendored SDK (de-vendor tracked in vendor/README.md)
 ├── scripts/
 │   ├── register-and-sync-secrets.sh   # CI: register provider + push binding secrets to Fly
 │   ├── verify-no-stale-machines.sh    # CI: post-deploy cleanup
@@ -71,15 +81,15 @@ When a rule and CLAUDE.md disagree, the rule wins (rules are higher-resolution).
 ## Common commands
 
 ```bash
-# Install pinned runtime + seed tool deps
+# Install pinned runtime + shell-guard deps (use any tool slug you're working on)
 npm ci --omit=dev
-cd tools/coinflip-tool && uv sync && cd ../..
+cd tools/shell-guard && uv sync && cd ../..
 
 # Run the full provider + supervisor locally (no TLS, port 8443)
 npx openlatch-provider listen --provider openlatch-provider.yaml --no-tls --port 8443
 
 # Fire a synthetic event (grab bnd_… from listen logs)
-npx openlatch-provider trigger pre_tool_use --binding bnd_REPLACE_ME --tool Bash --input 'ls' --no-tls
+npx openlatch-provider trigger pre_tool_use --binding bnd_REPLACE_ME --tool Bash --input 'rm -rf /' --no-tls
 
 # Validate without deploying
 npx openlatch-provider register --provider openlatch-provider.yaml --dry-run --skip-preflight
@@ -112,9 +122,9 @@ pre-commit run --all-files
 ## Branching, commits, releases
 
 - Branches: `feat/<short-name>`, `fix/<short-name>`, `docs/<short-name>`, `chore/<short-name>`.
-- Commits: **Conventional Commits** enforced by `commit-msg` hook. Tool-scoped commits use the tool slug as scope (`feat(coinflip-tool): …`).
+- Commits: **Conventional Commits** enforced by `commit-msg` hook. Tool-scoped commits use the tool slug as scope (`feat(shell-guard): …`).
 - PRs squash-merge into `main`; `main` deploys via `deploy.yml` (staging → smoke → production).
-- Releases: `release-please` opens **one Release PR per tool** (component-prefixed tags like `coinflip-tool-v0.2.0`). Pre-1.0 — minor bumps allowed for breaking changes inside a tool.
+- Releases: `release-please` opens **one Release PR per tool** (component-prefixed tags like `shell-guard-v0.1.0`). Pre-1.0 — minor bumps allowed for breaking changes inside a tool.
 
 ## Tech stack (must-know)
 
@@ -127,7 +137,7 @@ pre-commit run --all-files
 ## When you (the agent) get confused
 
 - **About the architecture?** `.claude/rules/openlatch-architecture.md`.
-- **About what to put in a tool?** `.claude/rules/tool-authoring.md` + copy `tools/coinflip-tool/` as a template.
+- **About what to put in a tool?** `.claude/rules/tool-authoring.md` + copy `tools/shell-guard/` as a template (pure-Python, deterministic, no extras).
 - **About the CI pipeline?** `.claude/rules/ci-release.md` + the workflow files themselves.
 - **About what NOT to do?** Each rule has a "Forbidden" table — search for it.
 
