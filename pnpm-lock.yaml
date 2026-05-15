@@ -9,61 +9,61 @@ importers:
   .:
     dependencies:
       '@openlatch/provider':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.2.1
+        version: 0.2.1
 
 packages:
 
-  '@openlatch/provider-darwin-arm64@0.1.0':
-    resolution: {integrity: sha512-Y2xUED/dMbyN7G/c/ZnMTb/bd/CH00Os44kwKp5oKRTUy2eWEB3LA7IpX5zHk6YjTRV1isZdLl0QfgaVeCJOMg==}
+  '@openlatch/provider-darwin-arm64@0.2.1':
+    resolution: {integrity: sha512-a4dtkKK99oO8qAFsx+cVAc5qNGTBYfZwAAWLj1v45DIjRULTuUXDSKFsMAVn2kbrN713DyV/awB45keH4uvOug==}
     cpu: [arm64]
     os: [darwin]
 
-  '@openlatch/provider-darwin-x64@0.1.0':
-    resolution: {integrity: sha512-fFDaaszjUI7Nktlyeo2snSFd2025qgMpfpJWnhHZZ82J5dINyen05ib4EF1lLSMF2XZwMqjnzupqAIhjTalbvw==}
+  '@openlatch/provider-darwin-x64@0.2.1':
+    resolution: {integrity: sha512-nyrccKlzoGgGtPX8/K69ap0lg3uUbsiycOoaNFB2oF/hTQcSHJhpQMOWwQ7T/7S/SIEVoHZnqSrC+rqwTXScEg==}
     cpu: [x64]
     os: [darwin]
 
-  '@openlatch/provider-linux-arm64@0.1.0':
-    resolution: {integrity: sha512-w8Of4AXCrQt+B5e2gpXcxg3DzTGNWKjjwnCf9ygroq2osVJCx3a2U9K9+G1XQScLg4hy6jCQagj0qpphMKbxMQ==}
+  '@openlatch/provider-linux-arm64@0.2.1':
+    resolution: {integrity: sha512-FTpSlFK79/Lv6hh3k/1v/FFX6xP1xWqYwzb2VJCMrLWstHO3e6wS/tDKW/oO/buA8xGkJ1yF5eoMNPVbuso54g==}
     cpu: [arm64]
     os: [linux]
 
-  '@openlatch/provider-linux-x64@0.1.0':
-    resolution: {integrity: sha512-LwznxH8rDgVJsmYDKXbRSSiiE5eKLJhKNpNanMiPiC+QQDf8xpFcw2dIAlOImRz35dDba3T/fx/T0sFW0tXlqg==}
+  '@openlatch/provider-linux-x64@0.2.1':
+    resolution: {integrity: sha512-GeqQmGAYi683V5fTelqmXnhkomSRLU+HpsJk2roMOWxHab8q3G/YZhLYSqzPLgClVUqjWbRTw+7d9uTJrPRvhA==}
     cpu: [x64]
     os: [linux]
 
-  '@openlatch/provider-win32-x64@0.1.0':
-    resolution: {integrity: sha512-FfHiptOukmm1k2WpKhB4Xr1HGFDmxv1j1UPc68Wf1N3CVRchjO07JZNwRPyH6mDVBSUosfG8urKfh+xX2EJDOA==}
+  '@openlatch/provider-win32-x64@0.2.1':
+    resolution: {integrity: sha512-hhnf4gZsTLjNCcU0ETBL0/ka6tY9aBz+Naw+ITol0SZn0xeelSqMh4DFLfJ0jsYXqj6HdQGqNeqsY36o2yDxhA==}
     cpu: [x64]
     os: [win32]
 
-  '@openlatch/provider@0.1.0':
-    resolution: {integrity: sha512-pEdH0SMwzX8aDG5+JuWSVjJ07l9pexbAZp1uLQhibmA2eG9UdsHGgtTKD80V1+Du+zXZIM3zuzH07LtWIDZ0fw==}
+  '@openlatch/provider@0.2.1':
+    resolution: {integrity: sha512-mQKnEzRYznj5vBQWPA8LTdHH5+G3iHMHfJaQKhEim8eFp/3lUpCg3HUymXqPNpNYWdPDZPNyqwhiiwOb6ePWng==}
     hasBin: true
 
 snapshots:
 
-  '@openlatch/provider-darwin-arm64@0.1.0':
+  '@openlatch/provider-darwin-arm64@0.2.1':
     optional: true
 
-  '@openlatch/provider-darwin-x64@0.1.0':
+  '@openlatch/provider-darwin-x64@0.2.1':
     optional: true
 
-  '@openlatch/provider-linux-arm64@0.1.0':
+  '@openlatch/provider-linux-arm64@0.2.1':
     optional: true
 
-  '@openlatch/provider-linux-x64@0.1.0':
+  '@openlatch/provider-linux-x64@0.2.1':
     optional: true
 
-  '@openlatch/provider-win32-x64@0.1.0':
+  '@openlatch/provider-win32-x64@0.2.1':
     optional: true
 
-  '@openlatch/provider@0.1.0':
+  '@openlatch/provider@0.2.1':
     optionalDependencies:
-      '@openlatch/provider-darwin-arm64': 0.1.0
-      '@openlatch/provider-darwin-x64': 0.1.0
-      '@openlatch/provider-linux-arm64': 0.1.0
-      '@openlatch/provider-linux-x64': 0.1.0
-      '@openlatch/provider-win32-x64': 0.1.0
+      '@openlatch/provider-darwin-arm64': 0.2.1
+      '@openlatch/provider-darwin-x64': 0.2.1
+      '@openlatch/provider-linux-arm64': 0.2.1
+      '@openlatch/provider-linux-x64': 0.2.1
+      '@openlatch/provider-win32-x64': 0.2.1
