@@ -16,7 +16,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@openlatch/provider": "^0.1.0"
+    "@openlatch/provider": "^0.2.1"
   },
   "scripts": {
     "listen": "openlatch-provider listen --provider openlatch-provider.yaml --no-tls --port 8443",
