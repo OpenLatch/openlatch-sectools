@@ -3,8 +3,10 @@
 # openlatch-sectools — runtime image
 #
 # Multi-stage build:
-#   1. `base`     — Node 22 + Python 3.12 + uv + corepack (for pnpm), shared
-#                   between deps and runtime so layer caches play nice.
+#   1. `base`     — Node 26 + Python 3.12 + uv, shared between deps and
+#                   runtime so layer caches play nice. (Node 25+ no longer
+#                   bundles Corepack; pnpm is unused in the image — the
+#                   only Node dep is installed with `npm ci`.)
 #   2. `deps`     — installs the pinned `@openlatch/provider` from npm and
 #                   every tool's locked dependencies. This is the layer
 #                   Dependabot exercises and we want to cache aggressively.
@@ -15,7 +17,7 @@
 # OIDC, attaches a Syft SBOM, and dual-pushes to ghcr.io (archive) and
 # registry.fly.io (Fly pull-target). See .github/workflows/deploy.yml.
 
-FROM node:22-bookworm-slim AS base
+FROM node:26-bookworm-slim AS base
 ARG GIT_SHA=dev-local
 ENV GIT_SHA=${GIT_SHA} \
     PYTHONUNBUFFERED=1 \
@@ -35,8 +37,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && curl -LsSf https://astral.sh/uv/install.sh | sh \
     && mv /root/.local/bin/uv /usr/local/bin/uv \
-    && uv python install 3.12 \
-    && corepack enable
+    && uv python install 3.12
 WORKDIR /app
 
 # ── deps ──────────────────────────────────────────────────────────────
