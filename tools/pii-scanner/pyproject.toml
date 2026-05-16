@@ -1,6 +1,6 @@
 [project]
 name = "pii-scanner"
-version = "0.1.0"
+version = "0.2.0"
 description = "OpenLatch PII detection tool — detects email, SSN, credit card, phone, IP in agent actions"
 readme = "README.md"
 license = { text = "Apache-2.0" }
