@@ -15,7 +15,7 @@
 # OIDC, attaches a Syft SBOM, and dual-pushes to ghcr.io (archive) and
 # registry.fly.io (Fly pull-target). See .github/workflows/deploy.yml.
 
-FROM node:22-bookworm-slim AS base
+FROM node:26-bookworm-slim AS base
 ARG GIT_SHA=dev-local
 ENV GIT_SHA=${GIT_SHA} \
     PYTHONUNBUFFERED=1 \
