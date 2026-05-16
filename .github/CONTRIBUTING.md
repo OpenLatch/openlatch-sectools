@@ -12,7 +12,7 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before participating.
 
 | Tool | Version | Purpose |
 | ---- | ------- | ------- |
-| Node.js | 22 LTS | Runs the bundled `@openlatch/provider` CLI |
+| Node.js | 26 | Runs the bundled `@openlatch/provider` CLI |
 | Python | 3.12+ | Tool authoring (Python tools use `uv`) |
 | `uv` | latest | Python dependency management |
 | `pnpm` | 9+ | Node tool dependency management |

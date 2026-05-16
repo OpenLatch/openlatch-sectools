@@ -86,7 +86,7 @@ You'll run the same image the deploy pipeline runs — minus Fly, plus a synthet
 
 | Tool | Why |
 | ---- | --- |
-| Node.js 22 | Runs the bundled `@openlatch/provider` CLI |
+| Node.js 26 | Runs the bundled `@openlatch/provider` CLI |
 | Python 3.12 + `uv` | Required by all Python tools |
 | Docker (optional) | If you want to validate the image build locally |
 

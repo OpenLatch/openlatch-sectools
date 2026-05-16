@@ -121,7 +121,7 @@ pre-commit run --all-files
 ## Tech stack (must-know)
 
 - Python 3.12 + `uv` (NOT pip / poetry / pipenv) for tools.
-- Node 22 LTS + `pnpm` for Node tools; root uses `npm` for the single `@openlatch/provider` pin.
+- Node 26 (`node:26-bookworm-slim` base) + `pnpm` for Node tools; root uses `npm` for the single `@openlatch/provider` pin. Node 25+ doesn't bundle Corepack — the image doesn't enable it; CI gets pnpm via `pnpm/action-setup`.
 - Ruff for Python lint+format.
 - Docker 25+, `flyctl` for ops.
 - License allowlist (CI gate): Apache-2.0, MIT, BSD-*, ISC, MPL-2.0. **No GPL/AGPL** in shipped tools.
