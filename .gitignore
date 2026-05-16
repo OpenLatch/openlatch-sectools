@@ -61,3 +61,4 @@ CLAUDE.local.md
 coverage.xml
 tools/**/coverage.xml
 .coverage
+.local/
