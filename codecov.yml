@@ -27,14 +27,56 @@ flag_management:
       - type: patch
         target: 75%
   individual_flags:
-    - name: coinflip-tool
+    - name: pii-scanner
       paths:
-        - tools/coinflip-tool/src/
+        - tools/pii-scanner/src/
+    - name: secrets-detector
+      paths:
+        - tools/secrets-detector/src/
+    - name: shell-guard
+      paths:
+        - tools/shell-guard/src/
+    - name: prompt-injection-guard
+      paths:
+        - tools/prompt-injection-guard/src/
+    - name: tool-integrity
+      paths:
+        - tools/tool-integrity/src/
+    - name: attack-path-guard
+      paths:
+        - tools/attack-path-guard/src/
+    - name: config-guard
+      paths:
+        - tools/config-guard/src/
 
 flags:
-  coinflip-tool:
+  pii-scanner:
     paths:
-      - tools/coinflip-tool/src/
+      - tools/pii-scanner/src/
+    carryforward: true
+  secrets-detector:
+    paths:
+      - tools/secrets-detector/src/
+    carryforward: true
+  shell-guard:
+    paths:
+      - tools/shell-guard/src/
+    carryforward: true
+  prompt-injection-guard:
+    paths:
+      - tools/prompt-injection-guard/src/
+    carryforward: true
+  tool-integrity:
+    paths:
+      - tools/tool-integrity/src/
+    carryforward: true
+  attack-path-guard:
+    paths:
+      - tools/attack-path-guard/src/
+    carryforward: true
+  config-guard:
+    paths:
+      - tools/config-guard/src/
     carryforward: true
 
 comment:

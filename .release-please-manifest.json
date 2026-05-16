@@ -1,4 +1,10 @@
 {
   ".": "0.0.0",
-  "tools/coinflip-tool": "0.1.0"
+  "tools/pii-scanner": "0.1.0",
+  "tools/secrets-detector": "0.1.0",
+  "tools/shell-guard": "0.1.0",
+  "tools/prompt-injection-guard": "0.1.0",
+  "tools/tool-integrity": "0.1.0",
+  "tools/attack-path-guard": "0.1.0",
+  "tools/config-guard": "0.1.0"
 }

@@ -56,3 +56,9 @@ CLAUDE.local.md
 .brainstorming/
 /.brainstorms
 /.local
+
+# pytest coverage artifacts
+coverage.xml
+tools/**/coverage.xml
+.coverage
+.local/

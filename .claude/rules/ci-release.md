@@ -73,8 +73,8 @@ Tags pushed: `latest` + `main-<short-sha>` + `staging-<sha>` for staging-only ar
 Monorepo config (`release-please-config.json`) with one component per tool:
 
 - Bumps each tool's version on conventional commits scoped to its path.
-- Opens **one Release PR per tool** (`separate-pull-requests: true`).
-- Tags `coinflip-tool-v0.2.0`, etc. (component-prefixed).
+- Opens **one Release PR per tool** (`separate-pull-requests: true`) — 7 components: `pii-scanner`, `secrets-detector`, `shell-guard`, `prompt-injection-guard`, `tool-integrity`, `attack-path-guard`, `config-guard`.
+- Tags are component-prefixed, e.g. `shell-guard-v0.1.0`.
 - Pre-1.0 — minor bumps are allowed for breaking changes within a tool.
 
 The root repo itself is also `release-type: simple` so the monorepo can cut its own version when ops changes ship without touching tools.

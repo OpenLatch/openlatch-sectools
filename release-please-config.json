@@ -23,10 +23,46 @@
       "component": "openlatch-sectools",
       "include-component-in-tag": true
     },
-    "tools/coinflip-tool": {
+    "tools/pii-scanner": {
       "release-type": "python",
-      "package-name": "coinflip-tool",
-      "component": "coinflip-tool",
+      "package-name": "pii-scanner",
+      "component": "pii-scanner",
+      "include-component-in-tag": true
+    },
+    "tools/secrets-detector": {
+      "release-type": "python",
+      "package-name": "secrets-detector",
+      "component": "secrets-detector",
+      "include-component-in-tag": true
+    },
+    "tools/shell-guard": {
+      "release-type": "python",
+      "package-name": "shell-guard",
+      "component": "shell-guard",
+      "include-component-in-tag": true
+    },
+    "tools/prompt-injection-guard": {
+      "release-type": "python",
+      "package-name": "prompt-injection-guard",
+      "component": "prompt-injection-guard",
+      "include-component-in-tag": true
+    },
+    "tools/tool-integrity": {
+      "release-type": "python",
+      "package-name": "tool-integrity",
+      "component": "tool-integrity",
+      "include-component-in-tag": true
+    },
+    "tools/attack-path-guard": {
+      "release-type": "python",
+      "package-name": "attack-path-guard",
+      "component": "attack-path-guard",
+      "include-component-in-tag": true
+    },
+    "tools/config-guard": {
+      "release-type": "python",
+      "package-name": "config-guard",
+      "component": "config-guard",
       "include-component-in-tag": true
     }
   }

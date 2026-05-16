@@ -34,7 +34,7 @@ For Node tools, swap `tests/` for `tests/` (Vitest) with the same layering.
 A smoke job in `pr-checks.yml` does:
 
 1. `docker build .` — proves the runtime image is buildable.
-2. `docker run` the image with the coinflip binding only — proves the supervisor can spawn at least one tool.
+2. `docker run` the image with the shell-guard binding — proves the supervisor can spawn at least one tool.
 3. `curl /healthz` on the container — proves the listen daemon answers.
 4. `npx openlatch-provider trigger pre_tool_use --binding <bnd> --no-tls` against the running container — proves a full round-trip.
 
@@ -50,7 +50,7 @@ In `deploy.yml`, a stronger smoke runs against the deployed staging URL after ev
 
 ```python
 from fastapi.testclient import TestClient
-from coinflip_tool import app
+from shell_guard import app
 
 client = TestClient(app)
 
@@ -58,11 +58,16 @@ def test_healthz_returns_200():
     response = client.get("/healthz")
     assert response.status_code == 200
 
-def test_detect_returns_verdict_shape(monkeypatch):
-    monkeypatch.setenv("OPENLATCH_COINFLIP_DENY_PCT", "100")
-    response = client.post("/event", json={"event_id": "evt_test", "event_type": "pre_tool_use", "payload": {}})
+def test_detect_rm_root_is_denied():
+    response = client.post("/event", json={"event_id": "evt_test", "event_type": "pre_tool_use", "payload": {"input": "rm -rf /"}})
     body = response.json()
-    assert body["verdict_hint"] == "deny"
+    assert body["verdict_hint"] == "block"
+    assert body["rule_id"] == "SHELL-RM-ROOT-01"
+
+def test_detect_safe_command_is_allowed():
+    response = client.post("/event", json={"event_id": "evt_test2", "event_type": "pre_tool_use", "payload": {"input": "ls"}})
+    body = response.json()
+    assert body["verdict_hint"] == "allow"
 ```
 
 The orchestrator runs `uv run pytest --cov=<slug_underscored> --cov-report=xml` per tool and uploads the result to Codecov tagged with the tool's flag.

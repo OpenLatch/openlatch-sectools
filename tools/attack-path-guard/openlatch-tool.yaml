@@ -1,0 +1,46 @@
+# `kind: Tool` manifest (v2) — owned by the tool author.
+# The operator-side `openlatch-provider.yaml` at the repo root composes this
+# tool into the deployed sectools provider via `tool_paths:`.
+schema_version: 2
+kind: Tool
+
+editor:
+  slug: openlatch
+  display_name: OpenLatch
+  description: |
+    Built-in security tools that ship with the OpenLatch platform.
+    Open-sourced, written against the public `openlatch-tool-sdk` —
+    the same SDK any community author uses.
+  homepage_url: https://openlatch.ai
+  docs_url: https://docs.openlatch.ai
+
+tools:
+  - slug: attack-path-guard
+    version: 0.1.0
+    license: apache-2.0
+    description: |
+      MCPhound-style attack-path analysis. Builds a NetworkX reachability
+      graph from the event's resource/permission topology and flags paths
+      from untrusted sources to sensitive sinks (incl. privilege escalation).
+    hooks_supported:
+      - pre_tool_use
+    agents_supported:
+      - claude-code
+    capabilities:
+      - threat_category: attack_path_analysis
+        execution_mode: async
+        declared_latency_p95_ms: 5000
+        needs_raw_payload: false
+    # Author's default process — the operator can layer
+    # `process_override:` on top from the root provider manifest.
+    process:
+      command: ["uv", "run", "uvicorn", "attack_path_guard:app", "--port", "8086"]
+      cwd: "."
+      env: {}
+      health_check:
+        http:
+          port: 8086
+          path: /healthz
+      restart:
+        max_restarts: 5
+        window_seconds: 60

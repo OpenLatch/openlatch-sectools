@@ -6,7 +6,7 @@
 
 | Change Type | Files to Check |
 | ----------- | -------------- |
-| New tool (`tools/<new>/`) | `README.md` (layout diagram + tutorial mention if needed), `tools/<new>/README.md`, `release-please-config.json`, `codecov.yml`, `.github/CODEOWNERS`, `.github/dependabot.yml` |
+| New tool (`tools/<new>/`) | `README.md` (layout diagram + tutorial mention if needed), `tools/<new>/README.md`, `release-please-config.json`, `codecov.yml`, `.github/CODEOWNERS`, `.github/dependabot.yml`; also check `vendor/openlatch-tool-sdk/` if the new tool extends the SDK contract |
 | Tool retirement | `README.md`, `openlatch-provider.yaml`, `release-please-config.json`, `codecov.yml`, `.github/CODEOWNERS`, `.github/dependabot.yml` |
 | Manifest schema bump | `openlatch-provider.yaml`, every `tools/*/openlatch-tool.yaml`, this rule file |
 | Pinned `@openlatch/provider` bump | `package.json`, `package-lock.json`, `Dockerfile` if version-specific flags changed |
