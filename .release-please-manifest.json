@@ -1,5 +1,5 @@
 {
-  ".": "0.0.0",
+  ".": "1.0.0",
   "tools/pii-scanner": "0.1.0",
   "tools/secrets-detector": "0.1.0",
   "tools/shell-guard": "0.1.0",
