@@ -24,8 +24,8 @@ jobs:
       manifests: ${{ steps.filter.outputs.manifests }}
       docker: ${{ steps.filter.outputs.docker }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
         id: filter
         with:
           list-files: shell
@@ -55,12 +55,12 @@ jobs:
     if: needs.changes.outputs.python_tools != ''
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Install uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v7
         with:
           version: "latest"
       - name: Lint + test each changed Python tool
@@ -91,7 +91,7 @@ jobs:
           done
       - name: Upload coverage to Codecov
         if: always()
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
@@ -102,13 +102,13 @@ jobs:
     if: needs.changes.outputs.node_tools != ''
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: "22"
       # pnpm version comes from package.json "packageManager"; specifying it
-      # here too makes pnpm/action-setup@v4 fail with ERR_PNPM_BAD_PM_VERSION.
-      - uses: pnpm/action-setup@v4
+      # here too makes pnpm/action-setup@v6 fail with ERR_PNPM_BAD_PM_VERSION.
+      - uses: pnpm/action-setup@v6
       - name: Install + lint + test each changed Node tool
         shell: bash
         run: |
@@ -121,7 +121,7 @@ jobs:
           done
       - name: Upload coverage to Codecov
         if: always()
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
@@ -132,8 +132,8 @@ jobs:
     if: needs.changes.outputs.manifests != ''
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: "22"
       - run: npm ci --omit=dev
@@ -156,10 +156,10 @@ jobs:
     if: needs.changes.outputs.docker != '' || needs.changes.outputs.python_tools != '' || needs.changes.outputs.node_tools != ''
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v3
+      - uses: actions/checkout@v6
+      - uses: docker/setup-buildx-action@v4
       - name: Build runtime image (cache-only, no push)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: false
