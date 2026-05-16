@@ -7,7 +7,7 @@ Non-negotiable language and tooling constraints for `openlatch-sectools`.
 | Layer | Required | Location |
 | ----- | -------- | -------- |
 | Detection tool (Python) | Python 3.12+ with type hints | `tools/<slug>/` |
-| Detection tool (Node/TS) | Node.js 22 LTS + TypeScript 5+ | `tools/<slug>/` |
+| Detection tool (Node/TS) | Node.js 26 + TypeScript 5+ | `tools/<slug>/` |
 | Provider runtime | `@openlatch/provider` (pinned in `package.json`) | root |
 | Container image | Multi-stage Dockerfile | `Dockerfile` |
 | Fly config | TOML | `fly/fly.*.toml` |
@@ -22,12 +22,14 @@ Non-negotiable language and tooling constraints for `openlatch-sectools`.
 | Node | `pnpm` (workspace) | `pnpm-lock.yaml` | Yes |
 | Root runtime | `npm` (single dep: `@openlatch/provider`) | `package-lock.json` | Yes |
 
-The root `package.json` deliberately uses `npm` (not `pnpm`) because the Dockerfile installs `@openlatch/provider` with `npm ci --omit=dev` — `npm` ships with Node 22 and avoids needing `pnpm install --frozen-lockfile` in the deps layer.
+The root `package.json` deliberately uses `npm` (not `pnpm`) because the Dockerfile installs `@openlatch/provider` with `npm ci --omit=dev` — `npm` ships with Node 26 and avoids needing `pnpm install --frozen-lockfile` in the deps layer.
+
+> **Corepack note**: Node 25+ no longer bundles Corepack, so the runtime image does **not** enable it (pnpm is unused in the image — the only Node dependency is installed via `npm ci`). CI installs pnpm explicitly via `pnpm/action-setup`. If a Node tool is ever added to the image, the Dockerfile must install pnpm explicitly (e.g. `npm ci` of a pinned `pnpm`), never `npm install -g`.
 
 ## Runtime Versions
 
 - Python 3.12+ (`requires-python = ">=3.11"` in tool `pyproject.toml` to ease lifting; container ships 3.12)
-- Node.js 22 LTS (Docker base + workflows)
+- Node.js 26 (Docker base `node:26-bookworm-slim` + workflows; Dependabot-bumped major)
 - Docker 25+
 - `flyctl` latest
 
